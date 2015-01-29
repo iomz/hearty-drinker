@@ -1,0 +1,111 @@
+/ This section is for Splash Screen
+%section#jSplash
+  #circle
+/ End of Splash Screen
+/ Homepage Slider
+#home-slider
+  .overlay
+  .slider-text
+    #slidecaption
+/ End Homepage Slider
+/ Header
+%header
+/ Instruction
+#shortcodes.page
+  .container
+    / Title Page
+    .row
+      .span12
+        .title-page
+          %h2.title 実験にご協力いただきありがとうございます！
+          %h3.title-description HeartyDrinkerはあなたがお酒に強いかどうかをテストするサービスです
+    / End Title Page
+    / Information Block
+    .row
+      .span12
+        %h3.spec 
+        .info-block
+          .info-text
+            %h3
+              %span.color-text 手順1
+              体重を測る
+            %p たいじゅういれる
+          .info-text
+            %h3
+              %span.color-text 手順2(option)
+              iomzからビールを1缶200円で買う
+          .info-text
+            %h3
+              %span.color-text 手順3
+              買ったビールを飲んで、5分おきにアルコールチェッカーをつかう
+            %p 記入欄
+          .info-text
+            %h3
+              %span.color-text 手順4
+              60分間12回分の測定結果をおくる
+            %a.button{:href => "", :target => "_blank"} SEND
+          .info-text
+            %h3
+              %span.color-text 手順5
+              あなたが普通の人よりお酒に強いかどうかわかります！
+            %p canvas
+    / End Alerts/Tabs Section
+    .row
+      .span12
+        %hr
+    / Start Social Icons
+    .row
+      .span12
+        .title-page.margin-50
+          %h2.title あなたのお酒の強さを自慢しよう！
+          %h3.title-description
+            まあまだ未実装ですけどね
+        %nav.icons-example
+          %ul
+            %li
+              %a{"data-toggle" => "tooltip", :href => "#", :title => "Share on Facebook"}
+                %span.font-icon-social-facebook
+            %li
+              %a{"data-toggle" => "tooltip", :href => "#", :title => "Share on Google+"}
+                %span.font-icon-social-google-plus
+            %li
+              %a{"data-toggle" => "tooltip", :href => "#", :title => "Share on Twitter"}
+                %span.font-icon-social-twitter
+    / End Social Icons
+/ End Shortcodes Section
+/ Footer
+%footer
+  %p.credits
+    \&copy;2015 HeartyDrinker. Iori MIZUTANI / 
+    %a{:href => "http://themes.alessioatzeni.com/html/brushed/", :title => "Brushed | Responsive One Page Template"} Brushed Template
+    by
+    %a{:href => "http://www.alessioatzeni.com/", :title => "Alessio Atzeni | Web Designer &amp; Front-end Developer"} Alessio Atzeni
+/ End Footer
+/ Back To Top
+%a#back-to-top{:href => "#"}
+  %i.font-icon-arrow-simple-up
+/ End Back to Top
+/ Js
+%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+/ jQuery Core
+%script{:src => "_include/js/bootstrap.min.js"}
+/ Bootstrap
+%script{:src => "_include/js/supersized.3.2.7.min.js"}
+/ Slider
+%script{:src => "_include/js/waypoints.js"}
+/ WayPoints
+%script{:src => "_include/js/waypoints-sticky.js"}
+/ Waypoints for Header
+%script{:src => "_include/js/jquery.isotope.js"}
+/ Isotope Filter
+%script{:src => "_include/js/jquery.fancybox.pack.js"}
+/ Fancybox
+%script{:src => "_include/js/jquery.fancybox-media.js"}
+/ Fancybox for Media
+%script{:src => "_include/js/jquery.tweet.js"}
+/ Tweet
+%script{:src => "_include/js/plugins.js"}
+/ Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi
+%script{:src => "_include/js/main.js"}
+/ Default JS
+/ End Js
