@@ -11,6 +11,7 @@
 ).each { |lib| require lib }
 
 %w(
+  user
   check_log
   core
   websocket_handler

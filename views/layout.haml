@@ -40,6 +40,8 @@
     %link{:href => "#", :rel => "apple-touch-icon", :sizes => "114x114"}
     %link{:href => "#", :rel => "apple-touch-icon", :sizes => "72x72"}
     %link{:href => "#", :rel => "apple-touch-icon", :sizes => "144x144"}
+    / HeartyDrinker
+    %link{:href => "css/hearty-drinker.css", :rel => "stylesheet"}
     / Modernizr
     %script{:src => "_include/js/modernizr.js"}
     / Analytics
@@ -57,4 +59,41 @@
     / End Analytics
   %body
     != yield
-
+/ Footer
+%footer
+  %p.credits
+    \&copy;2015 HeartyDrinker. Iori MIZUTANI / 
+    %a{:href => "http://themes.alessioatzeni.com/html/brushed/", :title => "Brushed | Responsive One Page Template"} Brushed Template
+    by
+    %a{:href => "http://www.alessioatzeni.com/", :title => "Alessio Atzeni | Web Designer &amp; Front-end Developer"} Alessio Atzeni
+/ End Footer
+/ Back To Top
+%a#back-to-top{:href => "#"}
+  %i.font-icon-arrow-simple-up
+/ End Back to Top
+/ Js
+%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+/ jQuery Core
+%script{:src => "_include/js/bootstrap.min.js"}
+/ Bootstrap
+%script{:src => "_include/js/supersized.3.2.7.min.js"}
+/ Slider
+%script{:src => "_include/js/waypoints.js"}
+/ WayPoints
+%script{:src => "_include/js/waypoints-sticky.js"}
+/ Waypoints for Header
+%script{:src => "_include/js/jquery.isotope.js"}
+/ Isotope Filter
+%script{:src => "_include/js/jquery.fancybox.pack.js"}
+/ Fancybox
+%script{:src => "_include/js/jquery.fancybox-media.js"}
+/ Fancybox for Media
+%script{:src => "_include/js/jquery.tweet.js"}
+/ Tweet
+%script{:src => "_include/js/plugins.js"}
+/ Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi
+%script{:src => "_include/js/main.js"}
+/ Default JS
+%script{:src => "js/hearty-drinker.js"}
+/ HeartyDrinker
+/ End Js

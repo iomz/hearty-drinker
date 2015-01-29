@@ -11,13 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129164439) do
+ActiveRecord::Schema.define(version: 20150129181608) do
 
   create_table "check_logs", force: :cascade do |t|
-    t.string   "user"
+    t.integer  "user_id"
     t.integer  "trial"
     t.integer  "minutes_elapsed"
     t.float    "concentration"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "e_mail"
+    t.float    "weight"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

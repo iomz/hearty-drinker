@@ -10,6 +10,6 @@ ActiveRecord::Base.default_timezone = :local
 #$stdout.sync = true #if development?
 #\ -s puma -E production
 
-#use HeartyDrinker::WebsocketHandler
+use HeartyDrinker::WebsocketHandler
 run HeartyDrinker::App
 

@@ -29,26 +29,63 @@
             %h3
               %span.color-text 手順1
               体重を測る
-            %p たいじゅういれる
+            .input-group
+              %label 体重(kg)
+              %input#weight{:placeholder => "100.00", :type => "text"}
+          %hr
           .info-text
             %h3
-              %span.color-text 手順2(option)
+              %span.color-text 手順2
               iomzからビールを1缶200円で買う
+          %hr
           .info-text
             %h3
               %span.color-text 手順3
-              買ったビールを飲んで、5分おきにアルコールチェッカーをつかう
-            %p 記入欄
+              右のボタンを押してから5分以内に買ったビールを飲み切る
+            %a.button{:onclick => "start_timer()"} START
+            #time 00:00:00
+            %p 　
+            %p 　
+            %p 　
+          %hr
           .info-text
             %h3
               %span.color-text 手順4
-              60分間12回分の測定結果をおくる
-            %a.button{:href => "", :target => "_blank"} SEND
+              5分おきにアルコールチェッカーをつかう
+            .input-group
+              %label アルコール濃度(mg/l)
+              %input#5mins{:placeholder => "5分後", :type => "text"}
+              %input#10mins{:placeholder => "10分後", :type => "text"}
+              %input#15mins{:placeholder => "15分後", :type => "text"}
+              %input#20mins{:placeholder => "20分後", :type => "text"}
+              %input#25mins{:placeholder => "25分後", :type => "text"}
+              %input#30mins{:placeholder => "30分後", :type => "text"}
+              %input#35mins{:placeholder => "35分後", :type => "text"}
+              %input#40mins{:placeholder => "40分後", :type => "text"}
+              %input#45mins{:placeholder => "45分後", :type => "text"}
+              %input#50mins{:placeholder => "50分後", :type => "text"}
+              %input#55mins{:placeholder => "55分後", :type => "text"}
+              %input#60mins{:placeholder => "60分後", :type => "text"}
+          %hr
           .info-text
             %h3
               %span.color-text 手順5
+              あなたのなまえを教えて下さい
+            .input-group
+              %label この実験に二回以上参加してくれる人は同じなまえでおねがいします！
+              %input#name{:placeholder => "なまえ", :type => "text"}
+          %hr
+          .info-text
+            %h3
+              %span.color-text 手順6
+              計測結果をおくる⇛
+            %a.button{:onclick => "post_logs()"} SEND
+          %hr
+          .info-text
+            %h3
+              %span.color-text 終了
               あなたが普通の人よりお酒に強いかどうかわかります！
-            %p canvas
+            %p ここにグラフがでます
     / End Alerts/Tabs Section
     .row
       .span12
@@ -59,7 +96,7 @@
         .title-page.margin-50
           %h2.title あなたのお酒の強さを自慢しよう！
           %h3.title-description
-            まあまだ未実装ですけどね
+            まだ未実装です
         %nav.icons-example
           %ul
             %li
@@ -73,39 +110,4 @@
                 %span.font-icon-social-twitter
     / End Social Icons
 / End Shortcodes Section
-/ Footer
-%footer
-  %p.credits
-    \&copy;2015 HeartyDrinker. Iori MIZUTANI / 
-    %a{:href => "http://themes.alessioatzeni.com/html/brushed/", :title => "Brushed | Responsive One Page Template"} Brushed Template
-    by
-    %a{:href => "http://www.alessioatzeni.com/", :title => "Alessio Atzeni | Web Designer &amp; Front-end Developer"} Alessio Atzeni
-/ End Footer
-/ Back To Top
-%a#back-to-top{:href => "#"}
-  %i.font-icon-arrow-simple-up
-/ End Back to Top
-/ Js
-%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
-/ jQuery Core
-%script{:src => "_include/js/bootstrap.min.js"}
-/ Bootstrap
-%script{:src => "_include/js/supersized.3.2.7.min.js"}
-/ Slider
-%script{:src => "_include/js/waypoints.js"}
-/ WayPoints
-%script{:src => "_include/js/waypoints-sticky.js"}
-/ Waypoints for Header
-%script{:src => "_include/js/jquery.isotope.js"}
-/ Isotope Filter
-%script{:src => "_include/js/jquery.fancybox.pack.js"}
-/ Fancybox
-%script{:src => "_include/js/jquery.fancybox-media.js"}
-/ Fancybox for Media
-%script{:src => "_include/js/jquery.tweet.js"}
-/ Tweet
-%script{:src => "_include/js/plugins.js"}
-/ Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi
-%script{:src => "_include/js/main.js"}
-/ Default JS
-/ End Js
+
