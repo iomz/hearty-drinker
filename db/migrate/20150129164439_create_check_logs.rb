@@ -1,7 +1,7 @@
 class CreateCheckLogs < ActiveRecord::Migration
   def change
     create_table :check_logs do |t|
-      t.integer :user_id
+      t.integer :uid
       t.integer :trial
       t.integer :minutes_elapsed
       t.float :concentration

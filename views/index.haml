@@ -18,13 +18,13 @@
       .span12
         .title-page
           %h2.title 実験にご協力いただきありがとうございます！
-          %h3.title-description HeartyDrinkerはあなたがお酒に強いかどうかをテストするサービスです
+          %h3.title-description HeartyDrinkerはあなたがお酒に強いかどうかを判定するサービスです
     / End Title Page
     / Information Block
     .row
       .span12
         %h3.spec 
-        .info-block
+        .info-block#weight_block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
           .info-text
             %h3
               %span.color-text 手順1
@@ -38,7 +38,7 @@
               %span.color-text 手順2
               iomzからビールを1缶200円で買う
           %hr
-          .info-text
+          .info-text#timer_block{"data-toggle" => "tooltip", :title => "まだ一時間経っていません(> <;)"}
             %h3
               %span.color-text 手順3
               右のボタンを押してから5分以内に買ったビールを飲み切る
@@ -48,24 +48,24 @@
             %p 　
             %p 　
           %hr
-          .info-text
+          .info-text#log_block
             %h3
               %span.color-text 手順4
               5分おきにアルコールチェッカーをつかう
             .input-group
               %label アルコール濃度(mg/l)
-              %input#5mins{:placeholder => "5分後", :type => "text"}
-              %input#10mins{:placeholder => "10分後", :type => "text"}
-              %input#15mins{:placeholder => "15分後", :type => "text"}
-              %input#20mins{:placeholder => "20分後", :type => "text"}
-              %input#25mins{:placeholder => "25分後", :type => "text"}
-              %input#30mins{:placeholder => "30分後", :type => "text"}
-              %input#35mins{:placeholder => "35分後", :type => "text"}
-              %input#40mins{:placeholder => "40分後", :type => "text"}
-              %input#45mins{:placeholder => "45分後", :type => "text"}
-              %input#50mins{:placeholder => "50分後", :type => "text"}
-              %input#55mins{:placeholder => "55分後", :type => "text"}
-              %input#60mins{:placeholder => "60分後", :type => "text"}
+              %input#5mins{:placeholder => "5分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#10mins{:placeholder => "10分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#15mins{:placeholder => "15分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#20mins{:placeholder => "20分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#25mins{:placeholder => "25分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#30mins{:placeholder => "30分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#35mins{:placeholder => "35分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#40mins{:placeholder => "40分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#45mins{:placeholder => "45分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#50mins{:placeholder => "50分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#55mins{:placeholder => "55分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
+              %input#60mins{:placeholder => "60分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
           %hr
           .info-text
             %h3
@@ -81,11 +81,12 @@
               計測結果をおくる⇛
             %a.button{:onclick => "post_logs()"} SEND
           %hr
-          .info-text
+          .info-text#finish_block
             %h3
               %span.color-text 終了
               あなたが普通の人よりお酒に強いかどうかわかります！
-            %p ここにグラフがでます
+            #thank_you
+            %p ここにグラフがでる予定です(まだ出ません)
     / End Alerts/Tabs Section
     .row
       .span12

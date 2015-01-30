@@ -1,58 +1,115 @@
-var seconds = 0, minutes = 0, hours = 0, t;
+var n_time, r_time, seconds = 0, t, h, m, s;
 var ws = new WebSocket(location.href.replace(/^http/, 'ws'));
 
 var start_timer = function() {
     timer();
 };
 
-var post_logs = function() {
+var collect_user_data = function() {
     var name = $("#name").val();
     var weight = parseFloat($("#weight").val());
-    if ( isNaN(weight) ) {
-        window.alert("体重を入力してくれないと評価できません！");
-        return;
-    }
     var logs = {};
     for( var i=5; i<=60; i+=5 ) {
         logs[i] = parseFloat($("#"+i+"mins").val());
-        if (logs[i] < 0 || 1 < logs[i] || isNaN(logs[i])) {
-            window.alert(i+'分経過時の値がおかしいので直してください!');
+    }
+    return {logs: logs, name: name, weight: weight};
+};
+
+var post_logs = function() {
+    if (ws.readyState != 1){
+        ws = new WebSocket(location.href.replace(/^http/, 'ws'));
+        setTimeout(function(){console.log("sleeping 3 seconds");}, 3000);
+    }
+    if (h != "01") {
+        scrollTo("timer_block");
+        $("#timer_block").tooltip('show');
+        return;
+    }
+    var data = collect_user_data();
+    if ( isNaN(data.weight) ) {
+        scrollTo("weight_block");
+        $("#weight_block").tooltip('show');
+        return;
+    }
+    for (var i in data.logs) {
+        if (data.logs[i] < 0 || 1 < data.logs[i] || isNaN(data.logs[i])) {
+            scrollTo("log_block");
+            $("#"+i+"mins").tooltip('show');
             return;
         }
     }
-    var data = JSON.stringify({logs: logs, name: name, weight: weight});
-    ws.send(data);
+    ws.send(JSON.stringify(data));
+    if (ws.readyState == 1) {
+        h = "00";
+        scrollTo("finish_block");
+        $("#thank_you").append("<h2><span style=\"color:#3399FF;\">ご協力ありがとうございました！</span></h2>");
+        burn_cookie();
+    } else {
+        window.alert("ちょっとうまく送れませんでした。iomzに教えてください(> <;;)");
+    }
+};
+
+var scrollTo = function(id) {
+    $('html, body').animate({
+        scrollTop: $("#"+id).offset().top
+    }, 1000);
 };
 
 var timer = function() {
-    t = setTimeout(add, 1e3);
+    $("#time").html("00<span style=\"color:#3399FF;\">:</span>00<span style=\"color:#3399FF;\">:</span>00");
+nTime = (new Date().getTime()).toString().slice(0, 10);
+    t = setInterval(add, 1e3);
 }
 
 var add = function() {
-    seconds++;
-    if (seconds >= 60) {
-        seconds = 0;
-        minutes++;
-        if (minutes >= 60) {
-            minutes = 0;
-            hours++;
-        }
-    }
-    var h = (hours ? hours > 9 ? hours : "0" + hours : "00");
-    var m = (minutes ? minutes > 9 ? minutes : "0" + minutes : "00");
-    var s = (seconds > 9 ? seconds : "0" + seconds);
+    rTime = (new Date().getTime()).toString().slice(0, 10);
+    seconds = parseInt(rTime - nTime);
+    h = Math.floor(seconds / 3600);
+    m = Math.floor((seconds - (h * 3600)) / 60);
+    s = seconds - (h * 3600) - (m * 60);
+    h = h < 10 ? "0"+h : h.toString();
+    m = m < 10 ? "0"+m : m.toString();
+    s = s < 10 ? "0"+s : s.toString();
     $("#time").html(h + "<span style=\"color:#3399FF;\">:</span>"
             + m + "<span style=\"color:#3399FF;\">:</span>" + s);
     if ( h == "01" ){
         $("#time").html("01:00:00");
         clearTimeout(t);
     } else {
-        timer();
+        bake_cookie();
     }
 }
 
+var recover_from_cookie = function() {
+    var data = $.cookie("hearty-cookie");
+    $("#weight").val(data.weight);
+    $("#name").val(data.name);
+    for( var i in data.logs ){
+        $("#"+i+"mins").val(data.logs[i]);
+    }
+}
+
+var bake_cookie = function() {
+    var data = collect_user_data();
+    $.cookie("hearty-cookie",  data);
+}
+
+var burn_cookie = function() {
+    for( var i=5; i<=60; i+=5 ) {
+        $("#"+i+"mins").val("");
+    }
+    var data = $.cookie("hearty-cookie");
+    data.logs = {};
+    $.cookie("hearty-cookie", data);
+};
+
 $(document).ready(function() {
+    $.cookie.json = true;
+    recover_from_cookie();
     ws.onopen = function() {
+    }
+    ws.onerror = function(error){
+        window.alert(error);
     }
     ws.onmessage = function(msg) {
         var data = JSON.parse(msg.data);
