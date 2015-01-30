@@ -23,6 +23,9 @@ var add = function() {
         m = m < 10 ? "0" + m : m.toString();
         s = s < 10 ? "0" + s : s.toString();
         $("#time").html(h + '<span style="color:#3399FF;">:</span>' + m + '<span style="color:#3399FF;">:</span>' + s);
+        if( (parseInt(m)+1)%5 == 0 && parseInt(s) == 45 ) {
+            $("#alert-sound").trigger('play');
+        }
     }
 };
 
@@ -117,7 +120,9 @@ var burn_cookie = function() {
 
 $(document).ready(function() {
     $.cookie.json = true;
-    recover_from_cookie();
+    if ($.cookie("hearty-cookie") != undefined){
+        recover_from_cookie();
+    }
     ws.onopen = function() {};
     ws.onerror = function(error) {
         window.alert(error);
