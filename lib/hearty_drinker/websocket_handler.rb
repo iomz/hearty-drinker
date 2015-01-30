@@ -13,7 +13,7 @@ module HeartyDrinker
         ws.on(:open) do |event|
           p [:open, ws.object_id]
           @clients << ws
-          ws.send({ you: ws.object_id }.to_json)
+          #ws.send({ you: ws.object_id }.to_json)
           #@clients.each do |client|
           #  client.send({ count: @clients.size }.to_json)
           #end
@@ -34,9 +34,11 @@ module HeartyDrinker
             trial = u.tried
           end
           uid = HeartyDrinker::User.find_by_name(name).id
+          beer_count = data['beer_count']
           data['logs'].each do |k, v|
-            HeartyDrinker::CheckLog.create(uid: uid, trial: trial, minutes_elapsed: k, concentration: v)
+            HeartyDrinker::CheckLog.create(uid: uid, beer_count: beer_count, trial: trial, minutes_elapsed: k, concentration: v)
           end
+          ws.send({ name: ws.object_id }.to_json)
         end
 
         ws.on(:close) do |event|

@@ -18,40 +18,64 @@
       .span12
         .title-page
           %h2.title 実験にご協力いただきありがとうございます！
-          %h3.title-description HeartyDrinkerはあなたがお酒に強いかどうかを判定するサービスです
+          %h3.title-description HeartyDrinkerはお酒に強いかどうかを判定するサービスです
     / End Title Page
     / Information Block
     .row
       .span12
         %h3.spec 
-        .info-block#weight_block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
+        .info-block
+          .info-text
+            %h3
+              %span.color-text 準備
+              心構え
+            %ul
+              %li この実験は、血中のアルコール濃度の推移を計測し、体重を元にした血中半減期モデルとの差異を計測するものです。
+              %li 大体の拘束時間は一時間です。
+              %li 実験中に指示のない飲酒はご遠慮ください。
+              %li この実験は何回受けて頂いても構いません、是非何度もチャレンジしてみてください。
+          %hr
           .info-text
             %h3
               %span.color-text 手順1
+              あなたのなまえを教えて下さい(optional)
+            .input-group
+              %label 二回以上この実験に参加してくれる人はぜひ同じなまえでおねがいします！
+              %input#name{:placeholder => "なまえ", :type => "text"}
+          %hr
+        .info-block#weight_block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
+          .info-text
+            %h3
+              %span.color-text 手順2
               体重を測る
             .input-group
               %label 体重(kg)
               %input#weight{:placeholder => "100.00", :type => "text"}
           %hr
-          .info-text
-            %h3
-              %span.color-text 手順2
-              iomzからビールを1缶200円で買う
-          %hr
-          .info-text#timer_block{"data-toggle" => "tooltip", :title => "まだ一時間経っていません(> <;)"}
+          .info-text#beer_block{"data-toggle" => "tooltip", :title => "ビールの本数を入力してください(^_^)"}
+
             %h3
               %span.color-text 手順3
+              iomzからサッポロ生ビール黒ラベル(350ml)を1-2缶もらう/買う
+            .input-group
+              %label ビールの本数(1or2)
+              %input#beer_count{:type => "text", :value => "1"}
+          %hr
+          .info-text
+            %h3
+              %span.color-text 手順4
               右のボタンを押してから5分以内に買ったビールを飲み切る
-            %a.button{:onclick => "start_timer()"} START
-            #time 00:00:00
+            %a.button#timer_button{:onclick => "start_timer()"} START
+            #time{"data-toggle" => "tooltip", :title => "まだ一時間経っていません(> <;)"} 00:00:00
             %p 　
             %p 　
             %p 　
           %hr
           .info-text#log_block
             %h3
-              %span.color-text 手順4
-              5分おきにアルコールチェッカーをつかう
+              %span.color-text 手順5
+              上のタイマーで5分おきにアルコールチェッカーをつかう
+            測り忘れたところは空欄でも構いません。
             .input-group
               %label アルコール濃度(mg/l)
               %input#5mins{:placeholder => "5分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
@@ -69,22 +93,14 @@
           %hr
           .info-text
             %h3
-              %span.color-text 手順5
-              あなたのなまえを教えて下さい
-            .input-group
-              %label この実験に二回以上参加してくれる人は同じなまえでおねがいします！
-              %input#name{:placeholder => "なまえ", :type => "text"}
-          %hr
-          .info-text
-            %h3
               %span.color-text 手順6
-              計測結果をおくる⇛
-            %a.button{:onclick => "post_logs()"} SEND
+              右のボタンを押して計測結果をおくる
+            %a.button#send_button{:onclick => "post_logs()"} SEND
           %hr
           .info-text#finish_block
             %h3
               %span.color-text 終了
-              あなたが普通の人よりお酒に強いかどうかわかります！
+              普通の人よりお酒に強いかどうかわかります！
             #thank_you
             %p ここにグラフがでる予定です(まだ出ません)
     / End Alerts/Tabs Section
@@ -95,9 +111,9 @@
     .row
       .span12
         .title-page.margin-50
-          %h2.title あなたのお酒の強さを自慢しよう！
+          %h2.title 友達にお酒の強さを自慢しよう！
           %h3.title-description
-            まだ未実装です
+            ↑いまはできません。
         %nav.icons-example
           %ul
             %li

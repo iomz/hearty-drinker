@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20150129181608) do
 
   create_table "check_logs", force: :cascade do |t|
     t.integer  "uid"
+    t.integer  "beer_count"
     t.integer  "trial"
     t.integer  "minutes_elapsed"
     t.float    "concentration"
