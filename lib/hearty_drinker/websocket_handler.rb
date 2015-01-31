@@ -22,30 +22,34 @@ module HeartyDrinker
         ws.on(:message) do |event|
           p [:message, event.data]
           data = JSON.parse(event.data)
-          name = data['name']
-          annon = false
-          if User.where(name: name).empty? 
-            if name == "" 
-              name = ws.object_id.to_s 
-              annon = true
+          begin
+            name = data['name']
+            annon = false
+            if User.where(name: name).empty? 
+              if name == "" 
+                name = ws.object_id.to_s 
+                annon = true
+              end
+              trial = User.create(name: name, weight: data['weight']).tried
+            else
+              u = User.find_by_name(name)
+              u.weight = data['weight']
+              u.tried += 1
+              u.save!
+              trial = u.tried
             end
-            trial = User.create(name: name, weight: data['weight']).tried
-          else
-            u = User.find_by_name(name)
-            u.weight = data['weight']
-            u.tried += 1
-            u.save!
-            trial = u.tried
-          end
-          uid = User.find_by_name(name).id
-          beer_count = data['beer_count']
-          data['logs'].each do |k, v|
-            CheckLog.create(uid: uid, beer_count: beer_count, trial: trial, minutes_elapsed: k, concentration: v)
-          end
-          if annon
-            ws.send({ name: ws.object_id }.to_json)
-          else
-            ws.send({ name: u.name }.to_json)
+            uid = User.find_by_name(name).id
+            beer_count = data['beer_count']
+            data['logs'].each do |k, v|
+              CheckLog.create(uid: uid, beer_count: beer_count, trial: trial, minutes_elapsed: k, concentration: v)
+            end
+            if annon
+              ws.send({ name: ws.object_id }.to_json)
+            else
+              ws.send({ name: u.name }.to_json)
+            end
+          rescue
+            p "## Something went wrong! ##"
           end
         end
 

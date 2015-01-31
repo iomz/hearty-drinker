@@ -5,10 +5,10 @@ var ws = new WebSocket(location.href.replace(/^http/, "ws"));
 var start_timer = function() {
     $("#time").html('00<span style="color:#3399FF;">:</span>00<span style="color:#3399FF;">:</span>00');
     nTime = new Date().getTime().toString().slice(0, 10);
-    t = setInterval(add, 1e3);
+    t = setInterval(add_seconds, 1e3);
 };
 
-var add = function() {
+var add_seconds = function() {
     if (h == "01") {
         $("#time").html("01:00:00");
         clearInterval(t);
