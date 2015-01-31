@@ -1,38 +1,60 @@
-var n_time, r_time, seconds = 0, t, h, m, s;
+var startTime, currentTime, seconds = 0, t, h, m, s;
 
 var ws = new WebSocket(location.href.replace(/^http/, "ws"));
 
 var start_timer = function() {
-    $("#time").html('00<span style="color:#3399FF;">:</span>00<span style="color:#3399FF;">:</span>00');
-    nTime = new Date().getTime().toString().slice(0, 10);
+    if (startTime != undefined ){
+        window.alert("Timer already started!");
+    } else {
+        $("#time").html('00<span style="color:#3399FF;">:</span>00<span style="color:#3399FF;">:</span>00');
+        startTime = new Date().getTime().toString().slice(0, 10);
+        t = setInterval(add_seconds, 1e3);
+    }
+};
+
+var resume_timer = function(start) {
+    startTime = start;
     t = setInterval(add_seconds, 1e3);
 };
 
 var add_seconds = function() {
-    if (h == "01") {
-        $("#time").html("01:00:00");
-        clearInterval(t);
+    bake_cookie();
+    currentTime = new Date().getTime().toString().slice(0, 10);
+    seconds = parseInt(currentTime - startTime);
+    if( seconds < 0 || 3600 < seconds ) {
+        stop_timer();
+        h = "01";
+        m = "00";
+        s = "00";
     } else {
-        bake_cookie();
-        rTime = new Date().getTime().toString().slice(0, 10);
-        seconds = parseInt(rTime - nTime);
         h = Math.floor(seconds / 3600);
         m = Math.floor((seconds - h * 3600) / 60);
         s = seconds - h * 3600 - m * 60;
         h = h < 10 ? "0" + h : h.toString();
         m = m < 10 ? "0" + m : m.toString();
         s = s < 10 ? "0" + s : s.toString();
-        $("#time").html(h + '<span style="color:#3399FF;">:</span>' + m + '<span style="color:#3399FF;">:</span>' + s);
         if( (parseInt(m)+1)%5 == 0 && parseInt(s) == 45 ) {
             $("#alert-sound").trigger('play');
         }
+        if ( h == "01" ) {
+            stop_timer();
+        } else {
+            $("#time").html(h + '<span style="color:#3399FF;">:</span>' + m + '<span style="color:#3399FF;">:</span>' + s);
+        }
     }
+};
+
+var stop_timer = function() {
+    $("#time").html("01:00:00");
+    clearInterval(t);
+    startTime = undefined;
 };
 
 var collect_user_data = function() {
     var name = $("#name").val();
     var weight = parseFloat($("#weight").val());
     var beer_count = parseInt($("#beer_count").val());
+    var start = startTime;
     var logs = {};
     for (var i = 5; i <= 60; i += 5) {
         logs[i] = parseFloat($("#" + i + "mins").val());
@@ -41,6 +63,7 @@ var collect_user_data = function() {
         beer_count: beer_count,
         logs: logs,
         name: name,
+        start: start,
         weight: weight
     };
 };
@@ -81,7 +104,7 @@ var post_logs = function() {
     if (ws.readyState == 1) {
         h = "00";
         $("#time").html("00:00:00");
-        scrollTo("finish_block");
+        scrollTo("thank-you");
         if ($("#thank-you").children().length != 1) {
             $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
         }
@@ -105,6 +128,9 @@ var recover_from_cookie = function() {
     for (var i in data.logs) {
         $("#" + i + "mins").val(data.logs[i]);
     }
+    if (data.start != undefined ){
+        resume_timer(data.start);
+    }
 };
 
 var bake_cookie = function() {
@@ -118,7 +144,13 @@ var burn_cookie = function() {
     }
     var data = $.cookie("hearty-cookie");
     data.logs = {};
+    data.startTime = undefined;
     $.cookie("hearty-cookie", data);
+};
+
+var destroy_cookie = function() {
+    var data = $.cookie("hearty-cookie");
+    $.cookie("hearty-cookie", undefined);
 };
 
 $(document).ready(function() {
