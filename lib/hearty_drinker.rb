@@ -30,6 +30,25 @@ module HeartyDrinker
     get '/logs' do
       @users = User.all
       @logs = CheckLog.all
+
+      log_arr = []
+      log = nil
+      @logs.each do |l|
+          if log.nil?
+            log = {}
+            log[:uid] = l[:uid]
+            log[:concentrations] = []
+          elsif log[:uid] != l[:uid]
+            log_arr.push(log)
+            log = {}
+            log[:uid] = l[:uid]
+            log[:concentrations] = []
+          end
+          log[:concentrations].push(l[:concentration])
+      end
+      log_arr.push(log)
+      @logs_json = log_arr.to_json
+
       haml :logs
     end
     

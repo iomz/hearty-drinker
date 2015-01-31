@@ -2,7 +2,7 @@
 %script{:src => "vendor/chartjs/Chart.min.js"}
 :javascript
   // Hold sgln-branch association locally in browser
-  var logs = #{@logs.to_json};
+  var logs = #{@logs_json};
 / For graphing
 %script{:src => "js/concentration.js"}
 / This section is for Splash Screen
@@ -58,7 +58,6 @@
               %th trial
               %th minutes_elapsed
               %th concentration
-              %th created_at
               %th updated_at
           %tbody
             - @logs.each do |l|
@@ -68,6 +67,5 @@
                 %td #{l.trial}
                 %td #{l.minutes_elapsed}
                 %td #{l.concentration}
-                %td #{l.created_at}
                 %td #{l.updated_at}
 
