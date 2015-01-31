@@ -80,8 +80,11 @@ var post_logs = function() {
     ws.send(JSON.stringify(data));
     if (ws.readyState == 1) {
         h = "00";
+        $("#time").html("00:00:00");
         scrollTo("finish_block");
-        $("#thank_you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
+        if ($("#thank-you").children().length != 1) {
+            $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
+        }
         burn_cookie();
     } else {
         window.alert("ちょっとうまく送れませんでした。iomzに教えてください(> <;;)");

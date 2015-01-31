@@ -23,22 +23,30 @@ module HeartyDrinker
           p [:message, event.data]
           data = JSON.parse(event.data)
           name = data['name']
-          if HeartyDrinker::User.where(name: name).empty? 
-            name = ws.object_id.to_s if name == "" 
-            trial = HeartyDrinker::User.create(name: name, weight: data['weight']).tried
+          annon = false
+          if User.where(name: name).empty? 
+            if name == "" 
+              name = ws.object_id.to_s 
+              annon = true
+            end
+            trial = User.create(name: name, weight: data['weight']).tried
           else
-            u = HeartyDrinker::User.find_by_name(name)
+            u = User.find_by_name(name)
             u.weight = data['weight']
             u.tried += 1
             u.save!
             trial = u.tried
           end
-          uid = HeartyDrinker::User.find_by_name(name).id
+          uid = User.find_by_name(name).id
           beer_count = data['beer_count']
           data['logs'].each do |k, v|
-            HeartyDrinker::CheckLog.create(uid: uid, beer_count: beer_count, trial: trial, minutes_elapsed: k, concentration: v)
+            CheckLog.create(uid: uid, beer_count: beer_count, trial: trial, minutes_elapsed: k, concentration: v)
           end
-          ws.send({ name: ws.object_id }.to_json)
+          if annon
+            ws.send({ name: ws.object_id }.to_json)
+          else
+            ws.send({ name: u.name }.to_json)
+          end
         end
 
         ws.on(:close) do |event|

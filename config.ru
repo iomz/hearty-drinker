@@ -7,7 +7,7 @@ Encoding.default_external = Encoding.find('UTF-8')
 Time.zone = 'Asia/Tokyo'
 ActiveRecord::Base.default_timezone = :local
 
-#$stdout.sync = true #if development?
+$stdout.sync = true #if development?
 #\ -s puma -E production
 
 use HeartyDrinker::WebsocketHandler
