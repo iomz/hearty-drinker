@@ -26,6 +26,13 @@ module HeartyDrinker
     get '/' do
       haml :index
     end
+
+    get '/logs' do
+      @users = User.all
+      @logs = CheckLog.all
+      haml :logs
+    end
+    
   end
 end
 

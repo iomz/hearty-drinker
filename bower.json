@@ -1,0 +1,15 @@
+{
+  "name": "hearty-drinker",
+  "version": "0.0.1",
+  "authors": [
+    "Iori Mizutani <iori.mizutani@gmail.com>"
+  ],
+  "description": "HeartyDrinker checks your alcohol resistance",
+  "private": true,
+  "dependencies": {
+    "Metro-UI-CSS": "~2.0.23",
+    "jqueryui": "~1.11.2",
+    "jquery-cookie": "~1.4.1",
+    "chartjs": "~1.0.1"
+  }
+}

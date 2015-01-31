@@ -1,0 +1,73 @@
+/ Chart.js
+%script{:src => "vendor/chartjs/Chart.min.js"}
+:javascript
+  // Hold sgln-branch association locally in browser
+  var logs = #{@logs.to_json};
+/ For graphing
+%script{:src => "js/concentration.js"}
+/ This section is for Splash Screen
+%section#jSplash
+  #circle
+/ End of Splash Screen
+/ Homepage Slider
+#home-slider
+  .overlay
+  .slider-text
+    #slidecaption
+/ End Homepage Slider
+/ Header
+%header
+/ Instruction
+#shortcodes.page
+  .container
+    / Title Page
+    .row
+      .span12
+        %h2 User
+        %table.table.table-bordered{:cellspacing => "0", :width => "100%"}
+          %thead
+            %tr
+              %th uid
+              %th name
+              %th weight
+              %th tried
+              %th created_at
+              %th updated_at
+          %tbody
+            - @users.each do |u|
+              %tr 
+                %td #{u.id}
+                %td #{u.name}
+                %td *** 
+                /%td #{u.weight}
+                %td #{u.tried}
+                %td #{u.created_at}
+                %td #{u.updated_at}
+    .row
+      .span12
+        %hr
+    .row
+      .span12
+        %h2 Log
+        #log-graph
+        %table.table.table-bordered{:cellspacing => "0", :width => "100%"}
+          %thead
+            %tr
+              %th uid
+              %th beer_count
+              %th trial
+              %th minutes_elapsed
+              %th concentration
+              %th created_at
+              %th updated_at
+          %tbody
+            - @logs.each do |l|
+              %tr 
+                %td #{l.uid}
+                %td #{l.beer_count}
+                %td #{l.trial}
+                %td #{l.minutes_elapsed}
+                %td #{l.concentration}
+                %td #{l.created_at}
+                %td #{l.updated_at}
+
