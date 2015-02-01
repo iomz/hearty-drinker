@@ -1,6 +1,32 @@
-div#time {
+#time {
     font-size: 600%;
     position: absolute;
     left: 20%;
     top: 70%;
+}
+
+#name, #weight {
+    position: absolute;
+    left: 75px;
+}
+
+#sex {
+    position: absolute;
+    left: 68px;
+    top: 89px;
+}
+
+#log-graph {
+    margin-bottom: 10px;
+}
+
+input[type="radio"] {
+    position: relative;
+    top: -4px;
+    margin-right: 5px;
+    margin-left: 8px;
+}
+
+#alcohol-label {
+    color: #fff;
 }

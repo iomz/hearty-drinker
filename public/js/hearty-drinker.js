@@ -2,27 +2,36 @@ var startTime, currentTime, seconds = 0, t, h, m, s;
 
 var ws = new WebSocket(location.href.replace(/^http/, "ws"));
 
-var start_timer = function() {
-    if (startTime != undefined ){
-        window.alert("Timer already started!");
-    } else {
+var startTimer = function() {
+    if (startTime == undefined) {
         $("#time").html('00<span style="color:#3399FF;">:</span>00<span style="color:#3399FF;">:</span>00');
         startTime = new Date().getTime().toString().slice(0, 10);
-        t = setInterval(add_seconds, 1e3);
+        t = setInterval(addSeconds, 1e3);
     }
 };
 
-var resume_timer = function(start) {
-    startTime = start;
-    t = setInterval(add_seconds, 1e3);
+var colorButton = function(id) {
+    $(id).css("color", "#FFF");
+    $(id).css("background-color", "#DE5E60");
 };
 
-var add_seconds = function() {
-    bake_cookie();
+var grayButton = function(id) {
+    $(id).css("color", "");
+    $(id).css("background-color", "");
+};
+
+var resumeTimer = function(start) {
+    grayButton("#timer-button");
+    startTime = start;
+    t = setInterval(addSeconds, 1e3);
+};
+
+var addSeconds = function() {
+    bakeCookie();
     currentTime = new Date().getTime().toString().slice(0, 10);
     seconds = parseInt(currentTime - startTime);
-    if( seconds < 0 || 3600 < seconds ) {
-        stop_timer();
+    if (seconds < 0 || 3600 < seconds) {
+        stopTimer();
         h = "01";
         m = "00";
         s = "00";
@@ -33,84 +42,111 @@ var add_seconds = function() {
         h = h < 10 ? "0" + h : h.toString();
         m = m < 10 ? "0" + m : m.toString();
         s = s < 10 ? "0" + s : s.toString();
-        if( (parseInt(m)+1)%5 == 0 && parseInt(s) == 45 ) {
-            $("#alert-sound").trigger('play');
+        if ((parseInt(m) + 1) % 5 == 0 && parseInt(s) == 45) {
+            $("#alert-sound").trigger("play");
         }
-        if ( h == "01" ) {
-            stop_timer();
+        if (h == "01") {
+            stopTimer();
         } else {
             $("#time").html(h + '<span style="color:#3399FF;">:</span>' + m + '<span style="color:#3399FF;">:</span>' + s);
         }
     }
 };
 
-var stop_timer = function() {
+var stopTimer = function() {
     $("#time").html("01:00:00");
     clearInterval(t);
     startTime = undefined;
+    colorButton("#send-button");
 };
 
-var collect_user_data = function() {
+var collectUserData = function() {
     var name = $("#name").val();
+    var sex = $("#sex").val();
     var weight = parseFloat($("#weight").val());
-    var beer_count = parseInt($("#beer_count").val());
+    var alcohol = 350 * .05 * .789;
     var start = startTime;
     var logs = {};
     for (var i = 5; i <= 60; i += 5) {
         logs[i] = parseFloat($("#" + i + "mins").val());
     }
     return {
-        beer_count: beer_count,
+        alcohol: alcohol,
         logs: logs,
         name: name,
+        sex: sex,
         start: start,
         weight: weight
     };
 };
 
-var post_logs = function() {
+var validateForms = function(data) {
+    if (isNaN(data.sex)) {
+        scrollTo("sex-block");
+        $("#sex-block").tooltip("show");
+        return false;
+    }
+    if (isNaN(data.weight)) {
+        scrollTo("weight-block");
+        $("#weight-block").tooltip("show");
+        return false;
+    }
+    if (isNaN(data.alcohol)) {
+        scrollTo("alcohol-block");
+        $("#alcohol-block").tooltip("show");
+        return false;
+    }
+    var blankCount = 0;
+    for (var i in data.logs) {
+        if (isNaN(data.logs[i])) {
+            blankCount+=1;
+        } else if (data.logs[i] < 0 || 1 < data.logs[i]) {
+            scrollTo("log-block");
+            $("#" + i + "mins").tooltip("show");
+            return false;
+        }
+    }
+    if (blankCount > 3) {
+        scrollTo("log-block");
+        return false;
+    } else {
+        return true;
+    }
+};
+
+var postLogs = function() {
+    if (h != "01") {
+        scrollTo("time");
+        $("#time").tooltip("show");
+        return;
+    }
     if (ws.readyState != 1) {
         ws = new WebSocket(location.href.replace(/^http/, "ws"));
         setTimeout(function() {
             console.log("sleeping 3 seconds");
         }, 3e3);
     }
-    if (h != "01") {
-        scrollTo("time");
-        $("#time").tooltip("show");
-        return;
-    }
-    var data = collect_user_data();
-    if (isNaN(data.weight)) {
-        scrollTo("weight_block");
-        $("#weight_block").tooltip("show");
-        return;
-    }
-    if (isNaN(data.beer_count)) {
-        scrollTo("beer_block");
-        $("#beer_block").tooltip("show");
-        return;
-    }
-    for (var i in data.logs) {
-        if (isNaN(data.logs[i])) {
-            data.logs[i] = 0;
-        } else if (data.logs[i] < 0 || 1 < data.logs[i]) {
-            scrollTo("log_block");
-            $("#" + i + "mins").tooltip("show");
-            return;
+    var data = collectUserData();
+    if (validateForms(data)) {
+        for (var i in data.logs) {
+            if (isNaN(data.logs[i])) {
+                data.logs[i] = -1;
+            }
         }
-    }
-    ws.send(JSON.stringify(data));
-    if (ws.readyState == 1) {
-        h = "00";
-        $("#time").html("00:00:00");
-        scrollTo("thank-you");
-        if ($("#thank-you").children().length != 1) {
-            $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
+        ws.send(JSON.stringify(data));
+        if (ws.readyState == 1) {
+            h = "00";
+            $("#time").html("00:00:00");
+            colorButton("#timer-button");
+            grayButton("#send-button");
+            scrollTo("thank-you");
+            if ($("#thank-you").children().length != 1) {
+                $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
+            }
+            burnCookie();
+        } else {
+            window.alert("ちょっとうまく送れませんでした。@iomzまで教えてください(> <;;)");
         }
-        burn_cookie();
-    } else {
-        window.alert("ちょっとうまく送れませんでした。iomzに教えてください(> <;;)");
     }
 };
 
@@ -120,25 +156,25 @@ var scrollTo = function(id) {
     }, 1e3);
 };
 
-var recover_from_cookie = function() {
+var recoverFromCookie = function() {
     var data = $.cookie("hearty-cookie");
     $("#weight").val(data.weight);
     $("#name").val(data.name);
-    $("#beer_count").val(data.beer_count);
+    $("#alcohol").val(data.alcohol);
     for (var i in data.logs) {
         $("#" + i + "mins").val(data.logs[i]);
     }
-    if (data.start != undefined ){
-        resume_timer(data.start);
+    if (data.start != undefined) {
+        resumeTimer(data.start);
     }
 };
 
-var bake_cookie = function() {
-    var data = collect_user_data();
+var bakeCookie = function() {
+    var data = collectUserData();
     $.cookie("hearty-cookie", data);
 };
 
-var burn_cookie = function() {
+var burnCookie = function() {
     for (var i = 5; i <= 60; i += 5) {
         $("#" + i + "mins").val("");
     }
@@ -148,15 +184,16 @@ var burn_cookie = function() {
     $.cookie("hearty-cookie", data);
 };
 
-var destroy_cookie = function() {
-    var data = $.cookie("hearty-cookie");
-    $.cookie("hearty-cookie", undefined);
+var destroyCookie = function() {
+    $.removeCookie("hearty-cookie");
 };
 
 $(document).ready(function() {
+    $("#alcohol").hide();
+    colorButton("#timer-button");
     $.cookie.json = true;
-    if ($.cookie("hearty-cookie") != undefined){
-        recover_from_cookie();
+    if ($.cookie("hearty-cookie") != undefined) {
+        recoverFromCookie();
     }
     ws.onopen = function() {};
     ws.onerror = function(error) {

@@ -48,58 +48,64 @@
               %li タイマーをスタートすると一時間後までカウントアップを始めます
               %li ページを閉じたりしても、タイマーをスタートした時間や既に記入した項目はCookieに保存されています
               %li タイマーはページを閉じても最初にスタートした時刻からのカウントアップを一時間継続します
-          %hr
+              %li 5分ごとに計測を促す通知音が再生されます。
+    .row
+      .span12
+        %hr
+    .row
+      .span12
+        .info-block#pre-check
           .info-text
             %h3
               %span.color-text 手順0
               アルコールチェッカーで呼気を計測する
-            あなたの呼気中に含まれるアルコール量が0.00mg/lであることを確認してください
-          %hr
+            %h6
+              あなたの呼気中に含まれるアルコール量が0.00mg/lであることを確認してください
+        .info-block#profile
           .info-text
             %h3
               %span.color-text 手順1
-              あなたのなまえを教えて下さい
-            .input-group
-              %label 二回以上この実験に参加してくれる人はぜひ同じなまえでおねがいします！
-              %input#name{:placeholder => "なまえ", :type => "text"}
-          %hr
-        .info-block#weight_block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
+              あなたのプロフィールを教えて下さい
+            %h6
+              名前
+              %input#name{:placeholder => "慶應花子", :type => "text"}
+            %h6#sex-block{"data-toggle" => "tooltip", :title => "性別を教えてもらわないと評価できません(;_;)"}
+              性別
+              .form-group#sex
+                %input{:type => "radio", :name => "sex", :value => "male"} 男性
+                %input{:type => "radio", :name => "sex", :value => "female"} 女性
+            %h6#weight-block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
+              体重(kg)
+              %input#weight{:placeholder => "100.00", :type => "text"}
+        /.info-block#beer-block{"data-toggle" => "tooltip", :title => "ビールの本数を入力してください(^_^)"}
+        .info-block#alcohol-block
           .info-text
             %h3
               %span.color-text 手順2
-              体重を測る
-            .input-group
-              %label 体重(kg)
-              %input#weight{:placeholder => "100.00", :type => "text"}
-          %hr
-          .info-text#beer_block{"data-toggle" => "tooltip", :title => "ビールの本数を入力してください(^_^)"}
-
-            %h3
-              %span.color-text 手順3
-              サッポロ生ビール黒ラベル(350ml)を1または2缶用意する(iomzから買うと1本200円)
-            .input-group
-              %label ビールの本数(1or2)
-              %input#beer_count{:type => "text", :value => "1"}
-          %hr
+              サッポロ生ビール黒ラベル(350ml)を1缶用意する
+            %input#alcohol{:placeholder => "17.5", :type => "text"}
+        .info-block#drink
           .info-text
             %h3
-              %span.color-text 手順4(右のボタンを押してから5分以内)
-              買ったビールを飲み干して、水でうがいをする
-            %a.button#timer_button{:onclick => "start_timer()"} START
+              %span.color-text 手順3
+              右のボタンをクリックしてタイマーをスタート
+            %h6
+              ビールはタイマーをスタートしてから最初の10分間でゆっくりと飲み切ってください
+            %a.button#timer-button{:onclick => "startTimer()"} START
             #time{"data-toggle" => "tooltip", :title => "まだ一時間経っていません(> <;)"} 00:00:00
             %p 　
             %p 　
             %p 　
-          %hr
-          .info-text#log_block
+        .info-block#log-block
+          .info-text
             %h3
-              %span.color-text 手順5
-              上のタイマーで5分おきにアルコールチェッカーで呼気を計測する
+              %span.color-text 手順4
+              5分おきにアルコールチェッカーで呼気を計測する
             %ul
-              %li タイマー音が出るので、お使いの端末の音量を上げると便利です。
-              %li 測り忘れたところは空欄でも構いません。
+              %li 5分ごとにタイマー音が出るので、お使いの端末の音量を上げると便利です
+              %li 測り忘れたところは空欄でも構いません(最大3つまで)
             .input-group
-              %label アルコール濃度(mg/l)
+              %label#alcohol-label 呼気中アルコール濃度(mg/l)
               %input#5mins{:placeholder => "5分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
               %input#10mins{:placeholder => "10分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
               %input#15mins{:placeholder => "15分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
@@ -112,20 +118,25 @@
               %input#50mins{:placeholder => "50分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
               %input#55mins{:placeholder => "55分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
               %input#60mins{:placeholder => "60分後", :type => "text", "data-toggle" => "tooltip", :title => "0.00-1.00の値を入れてください"}
-          %hr
+        .info-block#submit
           .info-text
             %h3
-              %span.color-text 手順6
+              %span.color-text 手順5
               右のボタンを押して計測結果をおくる
-            %a.button#send_button{:onclick => "post_logs()"} SEND
-          %hr
-          .info-text#finish_block
+            %a.button#send-button{:onclick => "postLogs()"} SEND
+        .info-block#finish-block
+          .info-text
             %h3
               %span.color-text 終了
-              普通の人よりお酒に強いかどうかわかります！
+              体重から算出した平均値との比較ができます
             #thank-you
-            %p ここにグラフがでる予定です(まだ出ません)
-            %p できればあとでまた再チャレンジしてください
+            %ul
+              %li ここにグラフがでる予定です(まだ出ません)
+              %li できればあとでまた再チャレンジしてください
+              %li
+                %a{:href => "/logs"}
+                  みんなの結果
+      %hr
     / End Alerts/Tabs Section
     .row
       .span12
@@ -136,7 +147,7 @@
         .title-page.margin-50
           %h2.title 友達にお酒の強さを自慢しよう！
           %h3.title-description
-            ↑いまはできません。
+            ↑いまはまだ内緒のサービスです。
         %nav.icons-example
           %ul
             %li

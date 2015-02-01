@@ -74,5 +74,8 @@ var drawStatLines = function(){
 };
 
 $(document).ready(function() {
+    $("html, body").animate({
+        scrollTop: $("#log").offset().top
+    }, 1e3);
     drawStatLines();
 });
