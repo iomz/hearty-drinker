@@ -65,11 +65,10 @@ var collectUserData = function() {
     if ($("input[type=radio]:checked").size() > 0) {
         var sex = $("#male").prop("checked") ? "male" : "female";
     } else {
-        var sex = NaN;
+        var sex = undefined;
     }
     var weight = parseFloat($("#weight").val());
     var alcohol = 350 * .05 * .789;
-    var start = startTime;
     var logs = {};
     for (var i = 5; i <= 60; i += 5) {
         logs[i] = parseFloat($("#" + i + "mins").val());
@@ -79,13 +78,13 @@ var collectUserData = function() {
         logs: logs,
         name: name,
         sex: sex,
-        start: start,
+        startTime: startTime,
         weight: weight
     };
 };
 
 var validateForms = function(data) {
-    if (isNaN(data.sex)) {
+    if (data.sex == undefined) {
         scrollTo("#profile");
         $("#sex-block").tooltip("show");
         return false;
@@ -159,8 +158,8 @@ var recoverFromCookie = function() {
     for (var i in data.logs) {
         $("#" + i + "mins").val(data.logs[i]);
     }
-    if (data.start != undefined) {
-        resumeTimer(data.start);
+    if (data.startTime != undefined) {
+        resumeTimer(data.startTime);
     }
 };
 
@@ -192,16 +191,17 @@ var agree = function() {
 };
 
 $(document).ready(function() {
-    $("#procedures").hide();
-    $("#alcohol").hide();
-    $("#informed-consent").collapse("show");
-    colorButton("#timer-button");
     $.cookie.json = true;
+    $("#alcohol").hide();
     if ($.cookie("hearty-cookie") != undefined) {
-        $("#informed-consent").collapse("hide");
-        $("#procedures").show();
         scrollTo("#procedures");
         recoverFromCookie();
+    } else {
+        $("#informed-consent").collapse("show");
+        $("#procedures").hide();
+    }
+    if (startTime == undefined) {
+        colorButton("#timer-button");
     }
     ws.onopen = function() {};
     ws.onerror = function(error) {
@@ -209,10 +209,10 @@ $(document).ready(function() {
     };
     ws.onmessage = function(msg) {
         var data = JSON.parse(msg.data);
-        if(data.result == undefined || isNaN(data.result)){
-            console.log("Something went wrong in the server side!");
+        if(data.result == undefined){
+            console.log(data);
         } else {
-            if(data.result = "success") {
+            if(data.result == "success") {
                 $("#name").val(data.name);
                 h = "00";
                 $("#time").html("00:00:00");
