@@ -1,4 +1,4 @@
-var startTime, currentTime, seconds = 0, t, h, m, s;
+var startTime, currentTime, seconds = 0, t, h, m, s, informedConsentAgreed;
 
 var ws = new WebSocket(location.href.replace(/^http/, "ws"));
 
@@ -75,6 +75,7 @@ var collectUserData = function() {
     }
     return {
         alcohol: alcohol,
+        informedConsentAgreed: informedConsentAgreed,
         logs: logs,
         name: name,
         sex: sex,
@@ -175,6 +176,7 @@ var burnCookie = function() {
     var data = $.cookie("hearty-cookie");
     data.logs = {};
     data.startTime = undefined;
+    console.log(data);
     $.cookie("hearty-cookie", data);
 };
 
@@ -183,6 +185,8 @@ var destroyCookie = function() {
 };
 
 var agree = function() {
+    informedConsentAgreed = true;
+    bakeCookie();
     $("#informed-consent").collapse("hide");
     $("#procedures").show();
     setTimeout(function() {
@@ -193,7 +197,8 @@ var agree = function() {
 $(document).ready(function() {
     $.cookie.json = true;
     $("#alcohol").hide();
-    if ($.cookie("hearty-cookie") != undefined) {
+    var data = $.cookie("hearty-cookie");
+    if (data != undefined && data.informedConsentAgreed ) {
         scrollTo("#procedures");
         recoverFromCookie();
     } else {
