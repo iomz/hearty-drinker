@@ -62,7 +62,11 @@ var stopTimer = function() {
 
 var collectUserData = function() {
     var name = $("#name").val();
-    var sex = $("#sex").val();
+    if ($("input[type=radio]:checked").size() > 0) {
+        var sex = $("#male").prop("checked") ? "male" : "female";
+    } else {
+        var sex = NaN;
+    }
     var weight = parseFloat($("#weight").val());
     var alcohol = 350 * .05 * .789;
     var start = startTime;
@@ -82,32 +86,32 @@ var collectUserData = function() {
 
 var validateForms = function(data) {
     if (isNaN(data.sex)) {
-        scrollTo("sex-block");
+        scrollTo("#profile");
         $("#sex-block").tooltip("show");
         return false;
     }
     if (isNaN(data.weight)) {
-        scrollTo("weight-block");
+        scrollTo("#profile");
         $("#weight-block").tooltip("show");
         return false;
     }
     if (isNaN(data.alcohol)) {
-        scrollTo("alcohol-block");
+        scrollTo("#profile");
         $("#alcohol-block").tooltip("show");
         return false;
     }
     var blankCount = 0;
     for (var i in data.logs) {
         if (isNaN(data.logs[i])) {
-            blankCount+=1;
+            blankCount += 1;
         } else if (data.logs[i] < 0 || 1 < data.logs[i]) {
-            scrollTo("log-block");
+            scrollTo("#log-block");
             $("#" + i + "mins").tooltip("show");
             return false;
         }
     }
     if (blankCount > 3) {
-        scrollTo("log-block");
+        scrollTo("#log-block");
         return false;
     } else {
         return true;
@@ -116,7 +120,7 @@ var validateForms = function(data) {
 
 var postLogs = function() {
     if (h != "01") {
-        scrollTo("time");
+        scrollTo("#drink");
         $("#time").tooltip("show");
         return;
     }
@@ -139,7 +143,7 @@ var postLogs = function() {
             $("#time").html("00:00:00");
             colorButton("#timer-button");
             grayButton("#send-button");
-            scrollTo("thank-you");
+            scrollTo("#finish-block");
             if ($("#thank-you").children().length != 1) {
                 $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
             }
@@ -152,14 +156,15 @@ var postLogs = function() {
 
 var scrollTo = function(id) {
     $("html, body").animate({
-        scrollTop: $("#" + id).offset().top - 80
+        scrollTop: $(id).offset().top
     }, 1e3);
 };
 
 var recoverFromCookie = function() {
     var data = $.cookie("hearty-cookie");
-    $("#weight").val(data.weight);
     $("#name").val(data.name);
+    $("#" + data.sex).prop("checked", true);
+    $("#weight").val(data.weight);
     $("#alcohol").val(data.alcohol);
     for (var i in data.logs) {
         $("#" + i + "mins").val(data.logs[i]);
@@ -188,11 +193,24 @@ var destroyCookie = function() {
     $.removeCookie("hearty-cookie");
 };
 
+var agree = function() {
+    $("#informed-consent").collapse("hide");
+    $("#procedures").show();
+    setTimeout(function() {
+        scrollTo("#procedures");
+    }, 500);
+};
+
 $(document).ready(function() {
+    $("#procedures").hide();
     $("#alcohol").hide();
+    $("#informed-consent").collapse("show");
     colorButton("#timer-button");
     $.cookie.json = true;
     if ($.cookie("hearty-cookie") != undefined) {
+        $("#informed-consent").collapse("hide");
+        $("#procedures").show();
+        scrollTo("#procedures");
         recoverFromCookie();
     }
     ws.onopen = function() {};

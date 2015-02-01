@@ -30,3 +30,17 @@ input[type="radio"] {
 #alcohol-label {
     color: #fff;
 }
+
+#agree-button:hover,
+#agree-button:active,
+#agree-button:focus {
+	background-color: #DE5E60;
+	color:#FFFFFF;
+}
+
+#agree-button {
+    margin:auto;
+    position:relative;
+    top: 0;
+    left: 40%;
+}

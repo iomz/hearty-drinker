@@ -31,28 +31,50 @@
             %h3
               %span.color-text 準備
               はじめに必ずお読みください
-            必要なものの
+            注意事項
             %ul
-              %li アルコールチェッカー
-              %li お酒(サッポロ生ビール黒ラベル(350ml)推奨)
-              %li ブラウザ(Chrome推奨/IE以外対応)
-              %li 暇な一時間(車の運転等をする予定の方はお控えください)
-            心構え
-            %ul
-              %li この実験は、血中のアルコール濃度の推移を計測し、体重を元にした血中半減期モデルとの差異を計測するものです。
+              %li お酒に対する耐性が極度に低い方や未成年者のご利用はご遠慮ください。
+              %li 実験後に車の運転等をおこなう予定の方もお控えください。
               %li 実験前30分は飲酒、飲食、喫煙、洗口、歯磨きなどはお控えください。
               %li 実験中も指示のない飲酒または飲食、喫煙、洗口、歯磨きなどはご遠慮ください。
               %li この実験は何回受けて頂いても構いません、ぜひ何度もチャレンジしてみてください。
+            必要なもの
+            %ul
+              %li アルコールチェッカー
+              %li サッポロ生ビール黒ラベル(350ml)
+              %li ブラウザ(Chrome推奨/IE以外対応)
+              %li 一時間
             このウェブページについて
             %ul
               %li タイマーをスタートすると一時間後までカウントアップを始めます
               %li ページを閉じたりしても、タイマーをスタートした時間や既に記入した項目はCookieに保存されています
               %li タイマーはページを閉じても最初にスタートした時刻からのカウントアップを一時間継続します
               %li 5分ごとに計測を促す通知音が再生されます。
+            以下に同意できる方のみ[同意する]ボタンをクリックして次へ進んでください。
+            #ic-block
+              .accordion-group
+                .accordion-heading.accordionize
+                  %a.accordion-toggle{"data-toggle" => "collapse", "data-parent" => "#ic-block", "href" => "#informed-consent"}
+                    インフォームドコンセント
+                    %span.font-icon-arrow-simple-down
+                #informed-consent.accordion-body.collapse
+                  .accordion-inner
+                    本実験は、呼気中のアルコール濃度の推移を計測し、1-コンパートメントモデルによる血漿薬物濃度の推定値と、Widmarkの公式を用いた推定値のどちらがより正しいかを検証するたためのものです。
+                    実験の特性上、被験者はアルコールを摂取する必要があり、場合によってはアルコールによる健康障害を引き起こす可能性があります。
+                    そのため、本実験への参加は完全に自主的なものであり、HeartyDrinkerはこの実験への参加によって生じたいかなる不利益も感知しません。
+                    また、実験に参加される場合、短時間でのアルコールの多量摂取は急性アルコール中毒を引き起こす危険性があるため、必ず指定されたとおりにおこなってください。
+                    本実験で得られた個人情報(名前、性別、体重、計測値)はHeartyDrinker管理者が、個人情報に関する法令、規範に則り適正に管理いたします。
+                    個人情報の第三者へ開示は、ご本人の同意がある場合を除いて、提供いたしません。
+                    本研究は、文部科学省ならびに厚生労働省の制定する「人を対象とする医学系研究に関する倫理指針」総則第3により適用される研究の対象とはなりませんが、実験対象者への負担並びに予測されるリスク及び利益を告知するために、自主的にインフォームドコンセントを設置致します。
+                    本実験参加者は必ずこのインフォームドコンセントに同意するものとします。
+
+                    　  
+                    #agree.center
+                      %a.button#agree-button{:onclick => "agree()"} 同意する
     .row
       .span12
         %hr
-    .row
+    .row#procedures
       .span12
         .info-block#pre-check
           .info-text
@@ -72,8 +94,8 @@
             %h6#sex-block{"data-toggle" => "tooltip", :title => "性別を教えてもらわないと評価できません(;_;)"}
               性別
               .form-group#sex
-                %input{:type => "radio", :name => "sex", :value => "male"} 男性
-                %input{:type => "radio", :name => "sex", :value => "female"} 女性
+                %input#male{:type => "radio", :name => "sex", :value => "male"} 男性
+                %input#female{:type => "radio", :name => "sex", :value => "female"} 女性
             %h6#weight-block{"data-toggle" => "tooltip", :title => "体重を入力してくれないと評価できません(T_T)"}
               体重(kg)
               %input#weight{:placeholder => "100.00", :type => "text"}
@@ -135,7 +157,7 @@
               %li できればあとでまた再チャレンジしてください
               %li
                 %a{:href => "/logs"}
-                  みんなの結果
+                  みんなの結果をみる
       %hr
     / End Alerts/Tabs Section
     .row

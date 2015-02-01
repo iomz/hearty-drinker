@@ -38,7 +38,7 @@ module HeartyDrinker
             log = {}
             log[:uid] = l[:uid]
             log[:concentrations] = []
-          elsif log[:uid] != l[:uid]
+          elsif log[:uid] != l[:uid] or log[:concentrations].size == 12
             log_arr.push(log)
             log = {}
             log[:uid] = l[:uid]
