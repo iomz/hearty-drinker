@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150129181608) do
     t.integer  "trial"
     t.integer  "minutes_elapsed"
     t.float    "concentration"
+    t.string   "remark",          default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end

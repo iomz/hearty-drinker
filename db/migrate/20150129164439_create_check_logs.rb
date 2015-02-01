@@ -6,6 +6,7 @@ class CreateCheckLogs < ActiveRecord::Migration
       t.integer :trial
       t.integer :minutes_elapsed
       t.float :concentration
+      t.string :remark, :default => ""
       t.timestamps :null => true
     end
   end

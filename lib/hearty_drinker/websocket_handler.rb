@@ -45,9 +45,9 @@ module HeartyDrinker
               CheckLog.create(uid: uid, alcohol: alcohol, trial: trial, minutes_elapsed: k, concentration: v)
             end
             if annon
-              ws.send({ name: ws.object_id }.to_json)
+              ws.send({ result: "success", name: ws.object_id }.to_json)
             else
-              ws.send({ name: u.name }.to_json)
+              ws.send({ result: "success", name: u.name }.to_json)
             end
           rescue
             p "## Something went wrong! ##"

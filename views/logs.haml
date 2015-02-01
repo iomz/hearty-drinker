@@ -60,6 +60,7 @@
               %th trial
               %th minutes_elapsed
               %th concentration
+              %th remark
               %th updated_at
           %tbody
             - @logs.each do |l|
@@ -69,5 +70,6 @@
                 %td #{l.trial}
                 %td #{l.minutes_elapsed}
                 %td #{l.concentration}
+                %td #{l.remark}
                 %td #{l.updated_at}
 

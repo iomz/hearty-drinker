@@ -138,17 +138,7 @@ var postLogs = function() {
             }
         }
         ws.send(JSON.stringify(data));
-        if (ws.readyState == 1) {
-            h = "00";
-            $("#time").html("00:00:00");
-            colorButton("#timer-button");
-            grayButton("#send-button");
-            scrollTo("#finish-block");
-            if ($("#thank-you").children().length != 1) {
-                $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
-            }
-            burnCookie();
-        } else {
+        if (ws.readyState != 1) {
             window.alert("ちょっとうまく送れませんでした。@iomzまで教えてください(> <;;)");
         }
     }
@@ -219,8 +209,24 @@ $(document).ready(function() {
     };
     ws.onmessage = function(msg) {
         var data = JSON.parse(msg.data);
-        console.log(data);
-        $("#name").val(data.name);
+        if(data.result == undefined || isNaN(data.result)){
+            console.log("Something went wrong in the server side!");
+        } else {
+            if(data.result = "success") {
+                $("#name").val(data.name);
+                h = "00";
+                $("#time").html("00:00:00");
+                colorButton("#timer-button");
+                grayButton("#send-button");
+                scrollTo("#finish-block");
+                if ($("#thank-you").children().length != 1) {
+                    $("#thank-you").append('<h2><span style="color:#3399FF;">ご協力ありがとうございました！</span></h2>');
+                }
+                burnCookie();
+            } else {
+                // Keep the data, do something
+            }
+        }
     };
     ws.onclose = function() {};
 });
