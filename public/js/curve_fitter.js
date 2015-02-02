@@ -236,29 +236,32 @@ Graph.prototype.drawVertices = function() {
     ctx.restore();
 };
 
+var uid = 0;
+
 $(document).ready(function() {
-    graph.vertices = []; // [[x,y],[x2,y2],...]
     for ( var k  in logs ) {
-        var minute = 5;
-        for ( var i in logs[k].concentrations ) {
-            graph.vertices.push( [minute, logs[k].concentrations[i]] );
-            minute += 5;
+        if( k == 7 ) {
+            graph.vertices = []; // [[x,y],[x2,y2],...]
+            var minute = 5;
+            for ( var i in logs[k].concentrations ) {
+                graph.vertices.push( [minute, logs[k].concentrations[i]] );
+                minute += 5;
+            }
+            graph.draw();
+            graph.drawVertices();
+            var config = {
+                iterations: 1000,
+                size: 250,
+                crossover: 0.2, // 0.0-1.0
+                mutation: 0.4, // 0.0-1.0
+                skip: 10
+            };
+            var degree = 1; // N-dimention
+            var userData = {
+                terms: parseInt(degree + 1),
+                vertices: graph.vertices
+            };
+            genetic.evolve(config, userData);
         }
-        break;
     }
-    graph.draw();
-    graph.drawVertices();
-    var config = {
-        iterations: 1000,
-        size: 250,
-        crossover: 0.2, // 0.0-1.0
-        mutation: 0.4, // 0.0-1.0
-        skip: 10
-    };
-    var degree = 2; // N-dimention
-    var userData = {
-        terms: parseInt(degree + 1),
-        vertices: graph.vertices
-    };
-    genetic.evolve(config, userData);
 });
