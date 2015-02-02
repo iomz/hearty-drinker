@@ -1,5 +1,7 @@
 / Chart.js
 %script{:src => "vendor/chartjs/Chart.min.js"}
+/ Genetic.js
+%script{:src => "vendor/geneticjs/genetic.js"}
 :javascript
   // Hold logs
   var logs = #{@logs_json};
@@ -52,6 +54,35 @@
       .span12
         %h2 Log
         #log-graph
+        #curve-fitting-graph
+          %canvas#scratch{:style => "width: 800px; height: 500px; cursor: crosshair;"}
+        #curve-stats
+          %table.table.table-bordered{:cellspacing => "0", :width => "100%"}
+            %tbody
+              %tr
+                %td Solution
+                %td 
+                  %span#solution
+              %tr
+                %td Error
+                %td
+                  %span#bestfit
+              %tr
+                %td Avg Error per Vertex
+                %td
+                  %span#vertexerror
+              %tr
+                %td Generation
+                %td
+                  %span#generation
+              %tr
+                %td Average error
+                %td
+                  %span#avgbestfit
+              %tr
+                %td Error stdev
+                %td
+                  %span#errorstdev
         %table.table.table-bordered{:cellspacing => "0", :width => "100%"}
           %thead
             %tr
@@ -72,4 +103,4 @@
                 %td #{l.concentration}
                 %td #{l.remark}
                 %td #{l.updated_at}
-
+%script{:src => "js/curve_fitter.js"}

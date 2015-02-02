@@ -75,7 +75,7 @@ var drawStatLines = function(){
 
 $(document).ready(function() {
     $("html, body").animate({
-        scrollTop: $("#log").offset().top
+        scrollTop: $("#curve-stats").offset().top - 100
     }, 1e3);
     drawStatLines();
 });
