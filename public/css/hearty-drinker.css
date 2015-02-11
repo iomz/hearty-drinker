@@ -39,7 +39,7 @@ input[type="radio"] {
 }
 
 #agree-button {
-    margin:auto;
+    margin:15px auto 10px auto;
     position:relative;
     top: 0;
     left: 40%;
