@@ -68,7 +68,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.7)
+  bundler
   foreman
   hearty_drinker!
-  rake (~> 10.0)
+  rake
